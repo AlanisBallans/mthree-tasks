@@ -1,0 +1,3 @@
+this is a little file to use for the git merging exercise
+
+this text should be on main only and not test2
