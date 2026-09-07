@@ -5,28 +5,34 @@ import java.util.Scanner;
 
 public class RockPaperScissors {
 
-    private Scanner scanner = new Scanner(System.in);
-    private Random rng = new Random();
+
 
     public static void main(String[] args) {
 
         RockPaperScissors rps = new RockPaperScissors();
+        rps.gameLoop();
+
+
+    }
+
+    public void gameLoop() {
+        final Scanner scanner = new Scanner(System.in);
+        final Random rng = new Random();
 
         while (true) { // Plays a game on run, and as long as the answer is "Yes"
-            rps.playGame();
+            playGame();
 
             System.out.print("Would you like to play again? ");
-            String playAgain = rps.scanner.nextLine();
+            String playAgain = scanner.nextLine();
 
             if (!playAgain.equals("Yes")) {
                 System.out.println("Thanks for playing!");
                 return;
             }
         }
-
     }
 
-    void playGame() {
+    public void playGame() {
         int[] winDrawLoss = {0, 0, 0}; // Tracks *user's* w/d/l statistic
 
         System.out.print("How many rounds would you like to play (1-10)? ");
@@ -91,23 +97,27 @@ public class RockPaperScissors {
             System.out.println("You lost Rock Paper Scissors!");
             return;
         }
+
         if (winDrawLoss[0] == winDrawLoss[2]) {
             System.out.println("You tied at Rock Paper Scissors!");
             return;
         }
+
         System.out.println("You won Rock Paper Scissors!");
     }
 
     // Returns index of which of win/draw/loss occurred this round
-    int determineWinner(int player, int computer) {
+    public int determineWinner(int player, int computer) {
         if (player == computer) { // Draw if equal
             System.out.println("It's a draw!");
             return 1;
         }
 
-        if ((player + 1) % 3 == computer % 3) {  // Treating this cyclically, rock loses to paper loses to
-            System.out.println("You lose!");    // scissors loses to rock, so it'll be a loss if the computer
-            return 2;                           // picks the option one "above"
+        // Treating this cyclically, rock loses to paper loses to scissors loses to rock,
+        // so it'll be a loss if the computer picks the option one "above"
+        if ((player + 1) % 3 == computer % 3) {
+            System.out.println("You lose!");
+            return 2;
         }
 
         System.out.println("You win!");
