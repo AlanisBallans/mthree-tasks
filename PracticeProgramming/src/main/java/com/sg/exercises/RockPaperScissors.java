@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 public class RockPaperScissors {
 
+    final Scanner scanner = new Scanner(System.in);
+    final Random rng = new Random();
 
 
     public static void main(String[] args) {
@@ -16,8 +18,7 @@ public class RockPaperScissors {
     }
 
     public void gameLoop() {
-        final Scanner scanner = new Scanner(System.in);
-        final Random rng = new Random();
+
 
         while (true) { // Plays a game on run, and as long as the answer is "Yes"
             playGame();
