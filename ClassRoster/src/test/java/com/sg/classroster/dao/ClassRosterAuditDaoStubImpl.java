@@ -1,7 +1,4 @@
-package com.sg.classroster.service;
-
-import com.sg.classroster.dao.ClassRosterAuditDao;
-import com.sg.classroster.dao.ClassRosterPersistenceException;
+package com.sg.classroster.dao;
 
 public class ClassRosterAuditDaoStubImpl implements ClassRosterAuditDao {
     @Override
