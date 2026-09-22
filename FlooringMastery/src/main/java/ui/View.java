@@ -27,7 +27,7 @@ public class View {
         io.print("4. Remove an Order");
         io.print("5. Export All Data");
         io.print("6. Quit");
-
+        io.print("");
         int choice = io.readInt("Please choose from the above options", 1, 6);
         return choice;
     }
@@ -158,6 +158,11 @@ public class View {
 
 
     // ####### OTHER MESSAGES #######
+
+    public void displayOrdersBanner() {
+        io.print("=== ORDERS ===");
+    }
+
     public void displayExportDataSuccess() {
         io.print("Data successfully exported!");
     }
@@ -180,6 +185,10 @@ public class View {
 
     public void displayInvalidOrderMessage() {
         io.print("Invalid order.");
+    }
+
+    public void displaySummaryBanner() {
+        io.print("Summary:");
     }
 
     public void displayBuffer() {

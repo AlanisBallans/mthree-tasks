@@ -67,8 +67,12 @@ public class Controller {
     }
 
     private void displayOrders() throws PersistenceException {
+        view.displayOrdersBanner();
+
         LocalDate date = view.getDateInput();
         List<Order> orders = service.getOrdersForDate(date); // Get the orders to display
+
+        view.displayBuffer();
 
         if (orders == null) {
             view.displayNoSuchOrderMessage();
@@ -105,7 +109,10 @@ public class Controller {
 
         order.setOrderDate(date);
 
+        view.displayBuffer();
+
         // Display created order and make sure the user wants to add it before doing so
+        view.displaySummaryBanner();
         view.displayOrderInfo(order);
 
         boolean confirmation = view.getConfirmation();
@@ -184,8 +191,9 @@ public class Controller {
             replacementOrder = service.calculate(replacementOrder);
         }
 
-
+        view.displayBuffer();
         // Show the user the changes before confirming
+        view.displaySummaryBanner();
         view.displayOrderInfo(replacementOrder);
 
         Boolean confirmation = view.getConfirmation();
@@ -205,7 +213,9 @@ public class Controller {
         int orderNumber = view.getOrderNumberInput();
 
         // Display the order about to be deleted before getting confirmation
+        view.displaySummaryBanner();
         view.displayOrderInfo(service.getOrder(date, orderNumber));
+
         boolean confirmation = view.getConfirmation();
         if (!confirmation) return;
 
