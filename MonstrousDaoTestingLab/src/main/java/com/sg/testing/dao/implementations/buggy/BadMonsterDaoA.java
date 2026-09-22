@@ -11,6 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*
+    The issue with this implementation is that addMonster passes in a parameter i, but puts
+    the monster in the HashMap with the key id, which is an uninitialised member variable.
+    As such, all monsters are put at the default int value, 0. Therefore, if you add a
+    monster where i != 0, and try to get it (the get function does use the passed in
+    parameter correctly), the monster is not found.
+
+ */
+
 public class BadMonsterDaoA implements MonsterDao {
 
     Map<Integer, Monster> monsters = new HashMap<>();

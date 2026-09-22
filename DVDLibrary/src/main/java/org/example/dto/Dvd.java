@@ -2,6 +2,7 @@ package org.example.dto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Dvd {
 
@@ -69,5 +70,22 @@ public class Dvd {
 
     public void setUserNote(String userNote) {
         this.userNote = userNote;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Dvd dvd = (Dvd) o;
+        return Objects.equals(title, dvd.title) && Objects.equals(releaseDate, dvd.releaseDate) && Objects.equals(rating, dvd.rating) && Objects.equals(director, dvd.director) && Objects.equals(studio, dvd.studio) && Objects.equals(userNote, dvd.userNote);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, releaseDate, rating, director, studio, userNote);
+    }
+
+    @Override
+    public String toString() {
+        return "Dvd{title=" + title + ", releaseDate=" + releaseDate + ", rating=" + rating + ", director=" + director + ", studio=" + studio + ", userNote=" + userNote + "}";
     }
 }

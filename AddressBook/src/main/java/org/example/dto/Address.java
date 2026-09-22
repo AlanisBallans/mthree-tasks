@@ -1,5 +1,7 @@
 package org.example.dto;
 
+import java.util.Objects;
+
 public class Address {
     private String firstName;
     private String lastName;
@@ -54,5 +56,24 @@ public class Address {
 
     public void setPostcode(String postcode) {
         this.postcode = postcode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(firstName, address.firstName) && Objects.equals(lastName, address.lastName)
+                && Objects.equals(streetAddress, address.streetAddress) && Objects.equals(town, address.town)
+                && Objects.equals(county, address.county) && Objects.equals(postcode, address.postcode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, streetAddress, town, county, postcode);
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" + "firstName=" + firstName + ", lastName=" + lastName + ", streetAddress=" + streetAddress + ", town=" + town + ", county=" + county + ", postcode=" + postcode + "}";
     }
 }

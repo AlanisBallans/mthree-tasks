@@ -7,10 +7,18 @@ import java.util.*;
 
 public class AddressBookDaoFileImpl implements AddressBookDao {
 
-    private static final String ADDRESS_FILE = "addresses.txt";
-    private static final String DELIMITER = "::";
+    private final String ADDRESS_FILE;
+    private final String DELIMITER = "::";
 
     private Map<String, Address> addresses = new HashMap<>();
+
+    public AddressBookDaoFileImpl() {
+        ADDRESS_FILE = "addresses.txt";
+    }
+
+    public AddressBookDaoFileImpl(String addressFile) {
+        ADDRESS_FILE = addressFile;
+    }
 
     @Override
     public Address addAddress(Address address) throws AddressBookDaoException {

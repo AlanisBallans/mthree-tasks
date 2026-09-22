@@ -101,8 +101,8 @@ public class ClassRosterController {
     private void removeStudent() throws ClassRosterPersistenceException {
         view.displayRemoveStudentBanner();
         String studentId = view.getStudentIdChoice();
-        service.removeStudent(studentId);
-        view.displayRemoveStudentBanner();
+        Student removedStudent = service.removeStudent(studentId);
+        view.displayRemoveResult(removedStudent);
     }
 
 }
