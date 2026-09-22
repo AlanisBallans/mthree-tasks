@@ -59,6 +59,7 @@ public class Controller {
         } catch (PersistenceException e) {
             view.displayErrorMessage(e.getMessage());
         }
+        view.displayExitMessage();
     }
 
 
