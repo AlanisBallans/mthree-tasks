@@ -50,6 +50,12 @@ public class ExportDaoFileImpl implements ExportDao {
 
         for (File file : files) {
             String fileName = file.getName();
+
+            /*
+             Extract date portion of file name and convert to LocalDate:
+             End index is the first character of the file extension
+             Start index is the end - the length of the date format
+             */
             String stringDate = fileName.substring(fileName.length() - (FILE_DATE_PATTERN.length() + ORDER_FILE_EXTENSION.length()),
                     fileName.length() - (ORDER_FILE_EXTENSION.length()));
             LocalDate date = LocalDate.parse(stringDate, FILE_DATE_FORMAT);
@@ -62,6 +68,8 @@ public class ExportDaoFileImpl implements ExportDao {
                 throw new PersistenceException("File unable to be loaded", e);
             }
 
+
+            // Write the line from the order file, with the date appended, to the export file
             while (scanner.hasNext()) {
                 String orderLine = scanner.nextLine() + DELIMITER + dateAsOrderField;
                 writer.println(orderLine);

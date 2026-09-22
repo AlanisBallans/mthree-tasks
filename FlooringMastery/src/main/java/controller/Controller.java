@@ -68,18 +68,21 @@ public class Controller {
 
     private void displayOrders() throws PersistenceException {
         LocalDate date = view.getDateInput();
-        List<Order> orders = service.getOrdersForDate(date);
+        List<Order> orders = service.getOrdersForDate(date); // Get the orders to display
+
         if (orders == null) {
             view.displayNoSuchOrderMessage();
             return;
         }
 
-        view.displayOrders(orders);
+        view.displayOrders(orders); // Display them
     }
 
     private void addOrder() throws PersistenceException {
         view.displayAddOrderBanner();
+
         LocalDate date;
+        // Try to get a valid date until you do
         do {
             date = view.getDateInput();
             date = service.validateDate(date);
@@ -87,6 +90,7 @@ public class Controller {
         } while (date == null);
 
         Order order;
+        // Try to get a valid order until you do
         do {
             order = view.getAddOrderInput(service.getTaxes(), service.getProducts());
             order = service.validateOrder(order);
@@ -101,7 +105,9 @@ public class Controller {
 
         order.setOrderDate(date);
 
+        // Display created order and make sure the user wants to add it before doing so
         view.displayOrderInfo(order);
+
         boolean confirmation = view.getConfirmation();
         if (!confirmation) return;
 
@@ -121,6 +127,7 @@ public class Controller {
             return;
         }
 
+        // Setting up temporary order to replace the old one with
         Order replacementOrder = new Order(orderNumber);
         replacementOrder.setCustomerName(orderToEdit.getCustomerName());
         replacementOrder.setState(orderToEdit.getState());
@@ -136,6 +143,7 @@ public class Controller {
         replacementOrder.setTotal(orderToEdit.getTotal());
 
         Order editedOrder;
+        // Try to get valid edit info until you do
         do {
             editedOrder = view.getEditOrderInput(orderToEdit, service.getTaxes(), service.getProducts());
 
@@ -148,6 +156,7 @@ public class Controller {
             }
         } while (editedOrder == null);
 
+        // Replacing the name, if necessary
         if (!editedOrder.getCustomerName().equals(orderToEdit.getCustomerName())) {
             replacementOrder.setCustomerName(editedOrder.getCustomerName());
         }
@@ -175,6 +184,8 @@ public class Controller {
             replacementOrder = service.calculate(replacementOrder);
         }
 
+
+        // Show the user the changes before confirming
         view.displayOrderInfo(replacementOrder);
 
         Boolean confirmation = view.getConfirmation();
@@ -193,12 +204,14 @@ public class Controller {
 
         int orderNumber = view.getOrderNumberInput();
 
+        // Display the order about to be deleted before getting confirmation
         view.displayOrderInfo(service.getOrder(date, orderNumber));
         boolean confirmation = view.getConfirmation();
         if (!confirmation) return;
 
         Order removedOrder = service.removeOrder(date, orderNumber);
 
+        // Returns early if no order to remove
         if (removedOrder == null) {
             view.displayNoSuchOrderMessage();
             return;

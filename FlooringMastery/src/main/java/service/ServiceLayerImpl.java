@@ -85,6 +85,7 @@ public class ServiceLayerImpl implements ServiceLayer {
     public Order validateOrder(Order order) throws PersistenceException {
         Order completeOrder = new Order(getNextOrderNumber());
 
+        // Validates each value in turn, returning early if any are not
         String name = order.getCustomerName();
         if (validateName(name) == null) return null;
 
@@ -103,6 +104,7 @@ public class ServiceLayerImpl implements ServiceLayer {
         completeOrder.setArea(area);
         completeOrder.setOrderDate(order.getOrderDate());
 
+        // If all is valid, calculate the rest of the values and return the completed order
         completeOrder = calculate(completeOrder);
         return completeOrder;
     }
@@ -126,7 +128,9 @@ public class ServiceLayerImpl implements ServiceLayer {
     // ####### VALIDATION #######
     @Override
     public String validateName(String name) {
-        if (name.matches("[a-zA-Z0-9.,]+[a-zA-Z0-9., ]*[a-zA-Z0-9.,]+")) {
+        name = name.trim();
+        // Name must be at least one character, and may include spaces in the middle, as the name has been trimmed
+        if (name.matches("[a-zA-Z0-9., ]+")) {
             return name;
         }
 
@@ -135,6 +139,7 @@ public class ServiceLayerImpl implements ServiceLayer {
 
     @Override
     public Tax validateState(String state, List<Tax> taxes) {
+        // Gets the Tax of the first state that matches the input, or null if there are none
         Tax tax = taxes.stream()
                 .filter((t) -> t.getStateAbr().equals(state))
                 .findFirst()
@@ -145,6 +150,7 @@ public class ServiceLayerImpl implements ServiceLayer {
 
     @Override
     public Product validateProduct(String productType, List<Product> products) {
+        // Gets the Product of the first product type that matches the input, or null if there are none
         Product product = products.stream()
                 .filter((p) -> p.getProductType().equals(productType))
                 .findFirst()
@@ -166,24 +172,30 @@ public class ServiceLayerImpl implements ServiceLayer {
         Tax tax = validateState(order.getState(), taxDao.getAllTaxes());
         BigDecimal area = order.getArea();
 
+        // Get the tax rate from the tax object
         BigDecimal taxRate = tax.getTaxRate();
         order.setTaxRate(taxRate);
 
+        // Get the product cost details from the product object
         BigDecimal costPerSquareFoot = product.getCostPerSquareFoot();
         order.setCostPerSquareFoot(costPerSquareFoot);
 
         BigDecimal laborCostPerSquareFoot = product.getLaborCostPerSquareFoot();
         order.setLaborCostPerSquareFoot(laborCostPerSquareFoot);
 
+        // Material cost = area * cost per square foot
         BigDecimal materialCost = area.multiply(costPerSquareFoot).setScale(2, RoundingMode.FLOOR);
         order.setMaterialCost(materialCost);
 
+        // Labor cost = area * labor cost per square foot
         BigDecimal laborCost = area.multiply(laborCostPerSquareFoot).setScale(2, RoundingMode.FLOOR);
         order.setLaborCost(laborCost);
 
+        // Tax = (material + labor) * tax rate as decimal
         BigDecimal taxValue = (materialCost.add(laborCost)).multiply(taxRate.divide(new BigDecimal(100))).setScale(2, RoundingMode.FLOOR);
         order.setTax(taxValue);
 
+        // Total = material + labor + tax
         BigDecimal total = materialCost.add(laborCost).add(taxValue);
         order.setTotal(total);
 

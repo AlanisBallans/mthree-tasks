@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class View {
 
     private UserIO io;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy"); // format the user will input dates as
 
     public View(UserIO io) {
         this.io = io;
