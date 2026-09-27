@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation=
+               "http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/mvc
+         http://www.springframework.org/schema/mvc/spring-mvc.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+    <!-- Bean definitions go here -->
+    <bean id="exportDao"
+          class="dao.implementations.ExportDaoFileImpl"/>
+
+    <bean id="orderDao"
+          class="dao.implementations.OrderDaoFileImpl"/>
+
+    <bean id="productDao"
+          class="dao.implementations.ProductDaoFileImpl"/>
+
+    <bean id="taxDao"
+          class="dao.implementations.TaxDaoFileImpl"/>
+
+
+    <bean id="exportDaoStub"
+          class="service.stubImpls.ExportDaoStubImpl"/>
+
+    <bean id="orderDaoStub"
+          class="service.stubImpls.OrderDaoStubImpl"/>
+
+    <bean id="productDaoStub"
+          class="service.stubImpls.ProductDaoStubImpl"/>
+
+    <bean id="taxDaoStub"
+          class="service.stubImpls.TaxDaoStubImpl"/>
+
+    <bean id="auditDaoStub"
+          class="service.stubImpls.AuditDaoStubImpl"/>
+
+    <bean id="service"
+          class="service.ServiceLayerImpl">
+        <constructor-arg ref="auditDaoStub"/>
+        <constructor-arg ref="exportDaoStub"/>
+        <constructor-arg ref="orderDaoStub"/>
+        <constructor-arg ref="taxDaoStub"/>
+        <constructor-arg ref="productDaoStub"/>
+
+
+    </bean>
+
+</beans>
