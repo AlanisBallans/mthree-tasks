@@ -1,2 +1,0 @@
-TX::Texas::4.45
-CA::California::5.25
